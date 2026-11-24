@@ -4,194 +4,651 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Original PC</title>
+<title>MY ORIGINAL PC</title>
 
 <style>
-    body {
-        background: #171717;
-        color: #eeeeee;
-        font-family: monospace;
-        text-align: center;
-        padding: 30px 15px;
-    }
+* {
+    box-sizing: border-box;
+}
 
-    h1 {
-        color: #00ff88;
-    }
+body {
+    margin: 0;
+    padding: 24px 16px;
+    background: #171717;
+    color: #eeeeee;
+    font-family: monospace;
+}
 
-    #screen {
-        background: #000;
-        color: #00ff00;
-        border: 4px solid #555;
-        border-radius: 8px;
-        max-width: 750px;
-        min-height: 200px;
-        margin: 25px auto;
-        padding: 20px;
-        text-align: left;
-        box-sizing: border-box;
-        white-space: pre-wrap;
-    }
+h1 {
+    color: #00ff88;
+    text-align: center;
+    letter-spacing: 2px;
+}
 
-    #emulator-area {
-        display: none;
-        max-width: 750px;
-        margin: 20px auto;
-        background: #000;
-        border: 4px solid #00ff88;
-        padding: 10px;
-        box-sizing: border-box;
-    }
+.subtitle {
+    text-align: center;
+    color: #999;
+}
 
-    #screen_container {
-        background: #000;
-        color: #fff;
-        overflow: auto;
-        text-align: left;
-    }
+.panel {
+    max-width: 850px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #222;
+    border: 1px solid #444;
+    border-radius: 8px;
+}
 
-    #screen_container > div {
-        white-space: pre;
-        font: 14px monospace;
-        line-height: 14px;
-    }
+h2 {
+    color: #00ff88;
+    font-size: 18px;
+    border-bottom: 1px solid #444;
+    padding-bottom: 10px;
+}
 
-    #screen_container canvas {
-        max-width: 100%;
-        height: auto;
-    }
+h3 {
+    color: #00ff88;
+}
 
-    button {
-        background: #333;
-        color: white;
-        border: 2px solid #00ff88;
-        padding: 12px 30px;
-        font-size: 18px;
-        cursor: pointer;
-        border-radius: 6px;
-    }
+.file-row {
+    margin: 16px 0;
+}
 
-    button:hover {
-        background: #006633;
-    }
+.file-row label {
+    display: block;
+    margin-bottom: 8px;
+    color: #ddd;
+}
 
-    button:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
+input[type="file"],
+input[type="number"],
+select {
+    width: 100%;
+    padding: 10px;
+    background: #111;
+    color: white;
+    border: 1px solid #555;
+    border-radius: 4px;
+}
+
+.file-info {
+    color: #999;
+    font-size: 12px;
+    margin-top: 6px;
+    overflow-wrap: anywhere;
+}
+
+button {
+    padding: 11px 18px;
+    margin: 5px;
+    background: #333;
+    color: white;
+    border: 1px solid #00ff88;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: monospace;
+    font-size: 14px;
+}
+
+button:hover:not(:disabled) {
+    background: #006633;
+}
+
+button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.primary {
+    background: #006633;
+}
+
+.danger {
+    border-color: #ff5555;
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 5px;
+}
+
+#status {
+    color: #00ff88;
+    overflow-wrap: anywhere;
+}
+
+#screen_container {
+    width: 100%;
+    min-height: 300px;
+    margin-top: 15px;
+    padding: 10px;
+    background: #000;
+    border: 3px solid #00ff88;
+    overflow: auto;
+    text-align: left;
+}
+
+#screen_container > div {
+    white-space: pre;
+    font: 14px monospace;
+    line-height: 14px;
+}
+
+#screen_container canvas {
+    max-width: 100%;
+    height: auto;
+}
+
+#screen_container:focus {
+    outline: 2px solid #00ff88;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.note {
+    color: #aaa;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+#machine-info {
+    line-height: 1.8;
+    color: #ccc;
+}
+
+footer {
+    text-align: center;
+    color: #666;
+    margin: 35px 0;
+    font-size: 12px;
+}
 </style>
 </head>
 
 <body>
 
 <h1>MY ORIGINAL PC</h1>
-<p>Original x86 Computer Project</p>
+<p class="subtitle">Original x86 Virtual Computer</p>
 
-<div id="screen">
-MY ORIGINAL PC BIOS
+<!-- 仮想PCの設定 -->
+<div class="panel" id="settings">
 
-Power is OFF.
+    <h2>VIRTUAL MACHINE SETTINGS</h2>
+
+    <h3>Memory</h3>
+
+    <div class="file-row">
+        <label for="memory">RAM容量</label>
+        <select id="memory">
+            <option value="64">64 MB</option>
+            <option value="128" selected>128 MB</option>
+            <option value="256">256 MB</option>
+            <option value="512">512 MB</option>
+        </select>
+    </div>
+
+    <h3>Storage Devices</h3>
+
+    <div class="file-row">
+        <label for="cdrom">CD-ROM / ISO Image</label>
+        <input type="file" id="cdrom"
+               accept=".iso,.img">
+        <div class="file-info" id="cdrom-info">
+            ファイル未選択
+        </div>
+    </div>
+
+    <div class="file-row">
+        <label for="hda">Hard Disk 1 (HDD)</label>
+        <input type="file" id="hda"
+               accept=".img,.bin,.hdd,.vhd">
+        <div class="file-info" id="hda-info">
+            ファイル未選択
+        </div>
+    </div>
+
+    <div class="file-row">
+        <label for="hdb">Hard Disk 2 (HDD)</label>
+        <input type="file" id="hdb"
+               accept=".img,.bin,.hdd,.vhd">
+        <div class="file-info" id="hdb-info">
+            ファイル未選択
+        </div>
+    </div>
+
+    <div class="file-row">
+        <label for="fda">Floppy Disk 1</label>
+        <input type="file" id="fda"
+               accept=".img,.ima,.flp">
+        <div class="file-info" id="fda-info">
+            ファイル未選択
+        </div>
+    </div>
+
+    <div class="file-row">
+        <label for="fdb">Floppy Disk 2</label>
+        <input type="file" id="fdb"
+               accept=".img,.ima,.flp">
+        <div class="file-info" id="fdb-info">
+            ファイル未選択
+        </div>
+    </div>
+
+    <h3>Boot Settings</h3>
+
+    <div class="file-row">
+        <label for="boot-order">起動順序</label>
+        <select id="boot-order">
+            <option value="0">Auto</option>
+            <option value="213">CD / Floppy / HDD</option>
+            <option value="123">CD / HDD / Floppy</option>
+            <option value="231">Floppy / CD / HDD</option>
+            <option value="321">Floppy / HDD / CD</option>
+            <option value="312">HDD / Floppy / CD</option>
+            <option value="132">HDD / CD / Floppy</option>
+        </select>
+    </div>
+
+    <p class="note">
+        ※ ISO・HDD・フロッピーのイメージはChromebookから直接読み込みます。
+        ファイルはGitHubにアップロードされません。
+    </p>
+
+    <div class="controls">
+        <button class="primary" id="start-button">
+            POWER ON
+        </button>
+    </div>
+
 </div>
 
-<button id="powerButton" onclick="powerOn()">
-電源を入れる
-</button>
+<!-- 仮想PCの操作 -->
+<div class="panel hidden" id="runtime">
 
-<div id="emulator-area">
+    <h2>VIRTUAL MACHINE</h2>
+
+    <div id="machine-info">
+        状態：<span id="status">Starting...</span>
+    </div>
+
+    <div class="controls">
+        <button id="pause-button">PAUSE</button>
+        <button id="reset-button">RESTART</button>
+        <button class="danger" id="stop-button">POWER OFF</button>
+        <button id="fullscreen-button">FULLSCREEN</button>
+    </div>
+
     <h3>VIRTUAL PC DISPLAY</h3>
-    <p id="v86-status">Initializing...</p>
 
-    <div id="screen_container">
+    <div id="screen_container" tabindex="0">
         <div></div>
         <canvas style="display:none"></canvas>
     </div>
+
+    <p class="note">
+        仮想PCの画面をクリックするとキーボード入力できます。
+    </p>
+
 </div>
 
-<!-- v86 Emulator -->
+<footer>
+    MY ORIGINAL PC PROJECT
+    <br>
+    Powered by v86 Emulator
+</footer>
+
 <script src="./v86/libv86.js"></script>
 
 <script>
+"use strict";
+
+// ===================================
+// MY ORIGINAL PC
+// Emulator Management
+// ===================================
+
 let emulator = null;
 let poweredOn = false;
+let paused = false;
+
+// HTML要素
+const $ = id => document.getElementById(id);
+
+// ファイルサイズ表示
+function formatSize(bytes) {
+    if (bytes < 1024) {
+        return bytes + " B";
+    }
+
+    if (bytes < 1024 * 1024) {
+        return (bytes / 1024).toFixed(2) + " KB";
+    }
+
+    if (bytes < 1024 * 1024 * 1024) {
+        return (bytes / 1024 / 1024).toFixed(2) + " MB";
+    }
+
+    return (bytes / 1024 / 1024 / 1024).toFixed(2) + " GB";
+}
+
+// ファイル情報の表示
+function setupFileInput(id) {
+
+    const input = $(id);
+
+    input.addEventListener("change", function() {
+
+        const file = this.files[0];
+        const info = $(id + "-info");
+
+        if (!file) {
+            info.textContent = "ファイル未選択";
+            return;
+        }
+
+        info.textContent =
+            file.name + " / " + formatSize(file.size);
+
+    });
+}
+
+// ファイル選択欄の設定
+["cdrom", "hda", "hdb", "fda", "fdb"]
+    .forEach(setupFileInput);
+
+
+// ===================================
+// Screen Management
+// ===================================
+
+function clearScreen() {
+
+    $("screen_container").innerHTML = `
+        <div style="
+            white-space: pre;
+            font: 14px monospace;
+            line-height: 14px;
+        "></div>
+        <canvas style="display:none"></canvas>
+    `;
+
+}
+
+function setStatus(message) {
+    $("status").textContent = message;
+}
+
+
+// ===================================
+// Power ON
+// ===================================
 
 function powerOn() {
 
     if (poweredOn) return;
-    poweredOn = true;
-
-    const screen = document.getElementById("screen");
-    const button = document.getElementById("powerButton");
-
-    button.disabled = true;
-
-    screen.textContent = "MY ORIGINAL PC BIOS\n\n";
-    screen.textContent += "Power ON...\n";
-
-    setTimeout(() => {
-
-        screen.textContent += "CPU: Checking...\n";
-        screen.textContent += "Memory: Checking...\n";
-        screen.textContent += "IDE: Checking...\n";
-
-        screen.textContent += "\nPOST completed.\n";
-        screen.textContent += "Starting x86 Emulator...\n";
-
-        startV86();
-
-    }, 700);
-}
-
-function startV86() {
-
-    const area = document.getElementById("emulator-area");
-    const status = document.getElementById("v86-status");
-
-    area.style.display = "block";
-    status.textContent = "Loading v86...";
 
     if (typeof V86 === "undefined") {
-        status.textContent =
-            "ERROR: libv86.js could not be loaded.";
+        alert("ERROR: libv86.js を読み込めません。");
         return;
     }
 
+    poweredOn = true;
+    paused = false;
+
+    $("settings").classList.add("hidden");
+    $("runtime").classList.remove("hidden");
+
+    $("pause-button").textContent = "PAUSE";
+
+    clearScreen();
+
+    setStatus("Loading BIOS...");
+
+    const options = {
+
+        wasm_path: "./v86/v86.wasm",
+
+        memory_size:
+            Number($("memory").value) * 1024 * 1024,
+
+        vga_memory_size:
+            8 * 1024 * 1024,
+
+        screen_container:
+            $("screen_container"),
+
+        bios: {
+            url: "./seabios.bin"
+        },
+
+        vga_bios: {
+            url: "./vgabios.bin"
+        },
+
+        autostart: true
+
+    };
+
+    // CD-ROM
+    const cdrom = $("cdrom").files[0];
+
+    if (cdrom) {
+        options.cdrom = {
+            buffer: cdrom
+        };
+    }
+
+    // HDD 1
+    const hda = $("hda").files[0];
+
+    if (hda) {
+        options.hda = {
+            buffer: hda
+        };
+    }
+
+    // HDD 2
+    const hdb = $("hdb").files[0];
+
+    if (hdb) {
+        options.hdb = {
+            buffer: hdb
+        };
+    }
+
+    // Floppy 1
+    const fda = $("fda").files[0];
+
+    if (fda) {
+        options.fda = {
+            buffer: fda
+        };
+    }
+
+    // Floppy 2
+    const fdb = $("fdb").files[0];
+
+    if (fdb) {
+        options.fdb = {
+            buffer: fdb
+        };
+    }
+
+    // Boot order
+    options.boot_order =
+        Number($("boot-order").value);
+
     try {
 
-        emulator = new V86({
+        emulator = new V86(options);
 
-            wasm_path: "./v86/v86.wasm",
+        emulator.add_listener(
+            "emulator-ready",
+            function() {
 
-            memory_size: 64 * 1024 * 1024,
-            vga_memory_size: 8 * 1024 * 1024,
+                setStatus("V86 READY - PC RUNNING");
 
-            screen_container:
-                document.getElementById("screen_container"),
+                $("screen_container").focus();
 
-            bios: {
-                url: "./seabios.bin"
-            },
+            }
+        );
 
-            vga_bios: {
-                url: "./vgabios.bin"
-            },
+        emulator.add_listener(
+            "emulator-started",
+            function() {
+                setStatus("PC STARTED");
+            }
+        );
 
-            autostart: true
-
-        });
-
-        emulator.add_listener("emulator-ready", function() {
-            status.textContent =
-                "V86 READY - Virtual PC Started";
-        });
+        emulator.add_listener(
+            "emulator-stopped",
+            function() {
+                if (poweredOn && !paused) {
+                    setStatus("PC STOPPED");
+                }
+            }
+        );
 
     } catch (error) {
 
-        status.textContent =
-            "ERROR: " + error.message;
-
         console.error(error);
+
+        setStatus("ERROR: " + error.message);
+
+        poweredOn = false;
+
     }
+
 }
+
+
+// ===================================
+// Pause / Resume
+// ===================================
+
+function togglePause() {
+
+    if (!emulator || !poweredOn) return;
+
+    if (!paused) {
+
+        emulator.stop();
+
+        paused = true;
+
+        $("pause-button").textContent = "RESUME";
+
+        setStatus("PAUSED");
+
+    } else {
+
+        emulator.run();
+
+        paused = false;
+
+        $("pause-button").textContent = "PAUSE";
+
+        setStatus("RUNNING");
+
+    }
+
+}
+
+
+// ===================================
+// Restart
+// ===================================
+
+function restartPC() {
+
+    if (!poweredOn) return;
+
+    if (emulator) {
+        emulator.stop();
+        emulator = null;
+    }
+
+    poweredOn = false;
+    paused = false;
+
+    $("runtime").classList.add("hidden");
+    $("settings").classList.remove("hidden");
+
+    powerOn();
+
+}
+
+
+// ===================================
+// Power OFF
+// ===================================
+
+function powerOff() {
+
+    if (emulator) {
+
+        emulator.stop();
+
+        emulator = null;
+
+    }
+
+    poweredOn = false;
+    paused = false;
+
+    $("runtime").classList.add("hidden");
+    $("settings").classList.remove("hidden");
+
+    $("pause-button").textContent = "PAUSE";
+
+    clearScreen();
+
+}
+
+
+// ===================================
+// Fullscreen
+// ===================================
+
+function fullscreen() {
+
+    const screen = $("screen_container");
+
+    if (screen.requestFullscreen) {
+        screen.requestFullscreen();
+    }
+
+}
+
+
+// ===================================
+// Button Events
+// ===================================
+
+$("start-button").addEventListener(
+    "click", powerOn
+);
+
+$("pause-button").addEventListener(
+    "click", togglePause
+);
+
+$("reset-button").addEventListener(
+    "click", restartPC
+);
+
+$("stop-button").addEventListener(
+    "click", powerOff
+);
+
+$("fullscreen-button").addEventListener(
+    "click", fullscreen
+);
+
 </script>
 
 </body>
