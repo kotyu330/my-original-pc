@@ -6,7 +6,7 @@
 エミュレーターエンジンはv86を使っています
 https://github.com/copy/v86
 注意：このプログラムは開発段階です
-＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
+
 
 Site | https://kotyu330.github.io/my-original-pc/
 
