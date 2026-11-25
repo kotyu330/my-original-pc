@@ -179,84 +179,6 @@ footer {
     font-size: 12px;
     margin: 35px 0;
 }
-
-/* Virtual keyboard */
-.virtual-keyboard {
-    margin-top: 18px;
-    padding: 14px;
-    background: #202020;
-    border: 1px solid #343434;
-    border-radius: 12px;
-    overflow-x: auto;
-}
-.virtual-keyboard-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 12px;
-    color: #d8d8d8;
-    font-size: 13px;
-}
-.virtual-keyboard-header strong {
-    color: #00ff88;
-    letter-spacing: .04em;
-}
-.virtual-keyboard-rows {
-    display: grid;
-    gap: 7px;
-    min-width: 650px;
-}
-.virtual-keyboard-row {
-    display: flex;
-    justify-content: center;
-    gap: 6px;
-}
-.virtual-key {
-    min-width: 38px;
-    height: 38px;
-    padding: 0 9px;
-    border: 1px solid #484848;
-    border-bottom-width: 3px;
-    border-radius: 6px;
-    background: #303030;
-    color: #e8e8e8;
-    font: inherit;
-    font-size: 12px;
-    cursor: default;
-    user-select: none;
-    touch-action: none;
-}
-.virtual-key.wide { min-width: 58px; }
-.virtual-key.extra-wide { min-width: 78px; }
-.virtual-key.space { flex: 1; max-width: 280px; }
-.virtual-key.test-key {
-    border-color: #00a85a;
-    color: #00ff88;
-    cursor: pointer;
-}
-.virtual-key.test-key:active,
-.virtual-key.test-key.is-pressed {
-    background: #075b37;
-    border-color: #00ff88;
-    color: #ffffff;
-    transform: translateY(2px);
-    border-bottom-width: 1px;
-}
-.virtual-key:disabled {
-    opacity: .55;
-}
-.virtual-key-note {
-    margin-top: 10px;
-    color: #929292;
-    font-size: 12px;
-    line-height: 1.5;
-}
-@media (max-width: 700px) {
-    .virtual-keyboard { padding: 10px; }
-    .virtual-keyboard-header { align-items: flex-start; flex-direction: column; }
-}
-
 </style>
 </head>
 
@@ -390,105 +312,6 @@ footer {
 
     <p class="note">
         画面をクリックしてキーボード入力を行います。
-
-        <div class="virtual-keyboard" aria-label="仮想キーボード">
-            <div class="virtual-keyboard-header">
-                <strong>VIRTUAL KEYBOARD</strong>
-                <span>入力テスト：Aキー</span>
-            </div>
-            <div class="virtual-keyboard-rows">
-                <div class="virtual-keyboard-row">
-                    <button class="virtual-key" type="button" disabled>ESC</button>
-                    <button class="virtual-key" type="button" disabled>F1</button>
-                    <button class="virtual-key" type="button" disabled>F2</button>
-                    <button class="virtual-key" type="button" disabled>F3</button>
-                    <button class="virtual-key" type="button" disabled>F4</button>
-                    <button class="virtual-key" type="button" disabled>F5</button>
-                    <button class="virtual-key" type="button" disabled>F6</button>
-                    <button class="virtual-key" type="button" disabled>F7</button>
-                    <button class="virtual-key" type="button" disabled>F8</button>
-                    <button class="virtual-key" type="button" disabled>F9</button>
-                    <button class="virtual-key" type="button" disabled>F10</button>
-                    <button class="virtual-key" type="button" disabled>F11</button>
-                    <button class="virtual-key" type="button" disabled>F12</button>
-                </div>
-                <div class="virtual-keyboard-row">
-                    <button class="virtual-key" type="button" disabled>1</button>
-                    <button class="virtual-key" type="button" disabled>2</button>
-                    <button class="virtual-key" type="button" disabled>3</button>
-                    <button class="virtual-key" type="button" disabled>4</button>
-                    <button class="virtual-key" type="button" disabled>5</button>
-                    <button class="virtual-key" type="button" disabled>6</button>
-                    <button class="virtual-key" type="button" disabled>7</button>
-                    <button class="virtual-key" type="button" disabled>8</button>
-                    <button class="virtual-key" type="button" disabled>9</button>
-                    <button class="virtual-key" type="button" disabled>0</button>
-                    <button class="virtual-key wide" type="button" disabled>-</button>
-                    <button class="virtual-key wide" type="button" disabled>=</button>
-                    <button class="virtual-key extra-wide" type="button" disabled>BACK</button>
-                </div>
-                <div class="virtual-keyboard-row">
-                    <button class="virtual-key wide" type="button" disabled>TAB</button>
-                    <button class="virtual-key" type="button" disabled>Q</button>
-                    <button class="virtual-key" type="button" disabled>W</button>
-                    <button class="virtual-key" type="button" disabled>E</button>
-                    <button class="virtual-key" type="button" disabled>R</button>
-                    <button class="virtual-key" type="button" disabled>T</button>
-                    <button class="virtual-key" type="button" disabled>Y</button>
-                    <button class="virtual-key" type="button" disabled>U</button>
-                    <button class="virtual-key" type="button" disabled>I</button>
-                    <button class="virtual-key" type="button" disabled>O</button>
-                    <button class="virtual-key" type="button" disabled>P</button>
-                    <button class="virtual-key wide" type="button" disabled>[</button>
-                    <button class="virtual-key wide" type="button" disabled>]</button>
-                </div>
-                <div class="virtual-keyboard-row">
-                    <button class="virtual-key extra-wide" type="button" disabled>CAPS</button>
-                    <button class="virtual-key test-key" id="virtual-key-a" type="button" aria-label="Aキーを押す">A</button>
-                    <button class="virtual-key" type="button" disabled>S</button>
-                    <button class="virtual-key" type="button" disabled>D</button>
-                    <button class="virtual-key" type="button" disabled>F</button>
-                    <button class="virtual-key" type="button" disabled>G</button>
-                    <button class="virtual-key" type="button" disabled>H</button>
-                    <button class="virtual-key" type="button" disabled>J</button>
-                    <button class="virtual-key" type="button" disabled>K</button>
-                    <button class="virtual-key" type="button" disabled>L</button>
-                    <button class="virtual-key wide" type="button" disabled>;</button>
-                    <button class="virtual-key wide" type="button" disabled>'</button>
-                    <button class="virtual-key extra-wide" type="button" disabled>ENTER</button>
-                </div>
-                <div class="virtual-keyboard-row">
-                    <button class="virtual-key extra-wide" type="button" disabled>SHIFT</button>
-                    <button class="virtual-key" type="button" disabled>Z</button>
-                    <button class="virtual-key" type="button" disabled>X</button>
-                    <button class="virtual-key" type="button" disabled>C</button>
-                    <button class="virtual-key" type="button" disabled>V</button>
-                    <button class="virtual-key" type="button" disabled>B</button>
-                    <button class="virtual-key" type="button" disabled>N</button>
-                    <button class="virtual-key" type="button" disabled>M</button>
-                    <button class="virtual-key wide" type="button" disabled>,</button>
-                    <button class="virtual-key wide" type="button" disabled>.</button>
-                    <button class="virtual-key wide" type="button" disabled>/</button>
-                    <button class="virtual-key extra-wide" type="button" disabled>SHIFT</button>
-                </div>
-                <div class="virtual-keyboard-row">
-                    <button class="virtual-key wide" type="button" disabled>CTRL</button>
-                    <button class="virtual-key wide" type="button" disabled>WIN</button>
-                    <button class="virtual-key wide" type="button" disabled>ALT</button>
-                    <button class="virtual-key space" type="button" disabled>SPACE</button>
-                    <button class="virtual-key wide" type="button" disabled>ALT</button>
-                    <button class="virtual-key wide" type="button" disabled>CTRL</button>
-                    <button class="virtual-key" type="button" disabled>↑</button>
-                    <button class="virtual-key" type="button" disabled>←</button>
-                    <button class="virtual-key" type="button" disabled>↓</button>
-                    <button class="virtual-key" type="button" disabled>→</button>
-                </div>
-            </div>
-            <div class="virtual-keyboard-note">
-                現在はAキーのみ入力テストに対応しています。ほかのキーは順次対応予定です。
-            </div>
-        </div>
-
     </p>
 
 </section>
@@ -836,7 +659,6 @@ async function powerOn() {
 // ====================================
 
 async function togglePause() {
-    releaseVirtualAKey();
 
     if (!emulator || !poweredOn || busy) {
         return;
@@ -888,7 +710,6 @@ async function togglePause() {
 // ====================================
 
 async function restartPC() {
-    releaseVirtualAKey();
 
     if (!emulator || !poweredOn || busy) {
         return;
@@ -926,7 +747,6 @@ async function restartPC() {
 // ====================================
 
 async function powerOff() {
-    releaseVirtualAKey();
 
     if (busy) {
         return;
@@ -1026,75 +846,7 @@ $("fullscreen-button").addEventListener(
 );
 
 // Initial state
-
-// Virtual keyboard: A key PS/2 scancode test (make 0x1E / break 0x9E).
-let virtualAKeyPressed = false;
-
-function sendVirtualScancode(code) {
-    if (!emulator || !poweredOn || paused || busy) return false;
-    if (typeof emulator.keyboard_send_scancodes !== "function") {
-        setStatus("仮想キーボードAPIが利用できません", "error");
-        return false;
-    }
-    try {
-        emulator.keyboard_send_scancodes([code]);
-        return true;
-    } catch (error) {
-        console.error("Virtual keyboard input failed:", error);
-        setStatus("キー入力に失敗しました", "error");
-        return false;
-    }
-}
-
-function pressVirtualAKey(event) {
-    if (event) {
-        event.preventDefault();
-    }
-    if (virtualAKeyPressed) return;
-    const key = document.getElementById("virtual-key-a");
-    if (!key) return;
-
-    if (sendVirtualScancode(0x1E)) {
-        virtualAKeyPressed = true;
-        key.classList.add("is-pressed");
-        if (event && key.setPointerCapture && event.pointerId !== undefined) {
-            try { key.setPointerCapture(event.pointerId); } catch (_) {}
-        }
-    }
-}
-
-function releaseVirtualAKey(event) {
-    if (event) {
-        event.preventDefault();
-    }
-    const key = document.getElementById("virtual-key-a");
-    if (virtualAKeyPressed) {
-        // Send key-up while the emulator is still running.
-        if (emulator && poweredOn && typeof emulator.keyboard_send_scancodes === "function") {
-            try { emulator.keyboard_send_scancodes([0x9E]); }
-            catch (error) { console.warn("Virtual key release failed:", error); }
-        }
-    }
-    virtualAKeyPressed = false;
-    if (key) key.classList.remove("is-pressed");
-}
-
-const virtualAKey = document.getElementById("virtual-key-a");
-if (virtualAKey) {
-    virtualAKey.addEventListener("pointerdown", pressVirtualAKey);
-    virtualAKey.addEventListener("pointerup", releaseVirtualAKey);
-    virtualAKey.addEventListener("pointercancel", releaseVirtualAKey);
-    virtualAKey.addEventListener("lostpointercapture", releaseVirtualAKey);
-    virtualAKey.addEventListener("contextmenu", event => event.preventDefault());
-}
-
-window.addEventListener("blur", () => releaseVirtualAKey());
-document.addEventListener("visibilitychange", () => {
-    if (document.hidden) releaseVirtualAKey();
-});
-
-
-    updateButtons();
+updateButtons();
 
 </script>
 
