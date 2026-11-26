@@ -1,853 +1,187 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#171717">
-<title>MY ORIGINAL PC</title>
-
-<style>
-:root {
-    color-scheme: dark;
-    --green: #00ff88;
-    --background: #171717;
-    --panel: #222;
-}
-
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    padding: 24px 14px;
-    background: var(--background);
-    color: #eee;
-    font-family: monospace;
-}
-
-header {
-    text-align: center;
-    margin-bottom: 25px;
-}
-
-h1 {
-    color: var(--green);
-    letter-spacing: 2px;
-}
-
-.subtitle {
-    color: #999;
-}
-
-.panel {
-    width: 100%;
-    max-width: 850px;
-    margin: 18px auto;
-    padding: 20px;
-    background: var(--panel);
-    border: 1px solid #444;
-    border-radius: 8px;
-}
-
-h2 {
-    color: var(--green);
-    font-size: 18px;
-    border-bottom: 1px solid #444;
-    padding-bottom: 10px;
-}
-
-h3 {
-    color: var(--green);
-    font-size: 15px;
-    margin-top: 24px;
-}
-
-.field {
-    margin: 16px 0;
-}
-
-.field label {
-    display: block;
-    margin-bottom: 8px;
-}
-
-input[type="file"],
-input[type="number"],
-select {
-    width: 100%;
-    padding: 10px;
-    background: #111;
-    color: white;
-    border: 1px solid #555;
-    border-radius: 5px;
-}
-
-.file-info {
-    color: #aaa;
-    font-size: 12px;
-    margin-top: 6px;
-    overflow-wrap: anywhere;
-}
-
-button {
-    margin: 5px;
-    padding: 11px 17px;
-    background: #333;
-    color: white;
-    border: 1px solid var(--green);
-    border-radius: 5px;
-    font-family: monospace;
-    cursor: pointer;
-}
-
-button:hover:not(:disabled) {
-    background: #006633;
-}
-
-button:disabled {
-    opacity: .45;
-    cursor: not-allowed;
-}
-
-.primary {
-    background: #006633;
-}
-
-.danger {
-    border-color: #ff5555;
-}
-
-.controls {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 5px;
-}
-
-#status {
-    color: var(--green);
-    overflow-wrap: anywhere;
-}
-
-#screen_container {
-    width: 100%;
-    min-height: 300px;
-    margin-top: 15px;
-    padding: 10px;
-    background: #000;
-    border: 3px solid var(--green);
-    overflow: auto;
-    text-align: left;
-    position: relative;
-}
-
-/* v86の標準テキスト画面 */
-#screen_container > div {
-    white-space: pre;
-    font: 14px monospace;
-    line-height: 14px;
-    text-align: left;
-}
-
-/* VGA・グラフィック画面 */
-#screen_container canvas {
-    display: block;
-    max-width: 100%;
-    height: auto;
-    image-rendering: pixelated;
-}
-
-#screen_container:focus {
-    outline: 2px solid var(--green);
-}
-
-.note {
-    color: #999;
-    font-size: 12px;
-    line-height: 1.7;
-}
-
-.hidden {
-    display: none !important;
-}
-
-footer {
-    text-align: center;
-    color: #666;
-    font-size: 12px;
-    margin: 35px 0;
-}
-</style>
-</head>
-
-<body>
-
-<header>
-    <h1>MY ORIGINAL PC</h1>
-    <p class="subtitle">ORIGINAL x86 VIRTUAL COMPUTER</p>
-</header>
-
-<!-- PC設定 -->
-<section class="panel" id="settings">
-
-    <h2>VIRTUAL MACHINE SETTINGS</h2>
-
-    <h3>Memory</h3>
-
-    <div class="field">
-        <label for="memory">RAM容量</label>
-        <select id="memory">
-            <option value="64">64 MB</option>
-            <option value="128" selected>128 MB</option>
-            <option value="256">256 MB</option>
-            <option value="512">512 MB</option>
-        </select>
-    </div>
-
-    <h3>Storage Devices</h3>
-
-    <div class="field">
-        <label for="cdrom">CD-ROM / ISO</label>
-        <input type="file" id="cdrom"
-               accept=".iso,.img">
-        <div class="file-info" id="cdrom-info">
-            ファイル未選択
-        </div>
-    </div>
-
-    <div class="field">
-        <label for="hda">Hard Disk 1</label>
-        <input type="file" id="hda"
-               accept=".img,.bin,.hdd,.vhd">
-        <div class="file-info" id="hda-info">
-            ファイル未選択
-        </div>
-    </div>
-
-    <div class="field">
-        <label for="hdb">Hard Disk 2</label>
-        <input type="file" id="hdb"
-               accept=".img,.bin,.hdd,.vhd">
-        <div class="file-info" id="hdb-info">
-            ファイル未選択
-        </div>
-    </div>
-
-    <div class="field">
-        <label for="fda">Floppy Disk 1</label>
-        <input type="file" id="fda"
-               accept=".img,.ima,.flp">
-        <div class="file-info" id="fda-info">
-            ファイル未選択
-        </div>
-    </div>
-
-    <div class="field">
-        <label for="fdb">Floppy Disk 2</label>
-        <input type="file" id="fdb"
-               accept=".img,.ima,.flp">
-        <div class="file-info" id="fdb-info">
-            ファイル未選択
-        </div>
-    </div>
-
-    <h3>Boot Settings</h3>
-
-    <div class="field">
-        <label for="boot-order">起動順序</label>
-        <select id="boot-order">
-            <option value="0">Auto</option>
-            <option value="531">CD / Floppy / HDD</option>
-            <option value="291">CD / HDD / Floppy</option>
-            <option value="561">Floppy / CD / HDD</option>
-            <option value="801">Floppy / HDD / CD</option>
-            <option value="786">HDD / Floppy / CD</option>
-            <option value="306">HDD / CD / Floppy</option>
-        </select>
-    </div>
-
-    <p class="note">
-        ファイルはブラウザ内で読み込まれます。
-        GitHubへアップロードされることはありません。
-        HDDの変更内容は元のファイルには自動保存されません。
-    </p>
-
-    <div class="controls">
-        <button class="primary" id="start-button">
-            POWER ON
-        </button>
-    </div>
-
-</section>
-
-<!-- 仮想PC -->
-<section class="panel hidden" id="runtime">
-
-    <h2>VIRTUAL MACHINE</h2>
-
-    <p>
-        STATUS:
-        <span id="status">OFF</span>
-    </p>
-
-    <div class="controls">
-        <button id="pause-button">PAUSE</button>
-        <button id="restart-button">RESTART</button>
-        <button class="danger" id="stop-button">
-            POWER OFF
-        </button>
-        <button id="fullscreen-button">
-            FULLSCREEN
-        </button>
-    </div>
-
-    <h3>VIRTUAL PC DISPLAY</h3>
-
-    <div id="screen_container" tabindex="0">
-        <div style="white-space:pre;font:14px monospace;line-height:14px"></div>
-        <canvas style="display:none"></canvas>
-    </div>
-
-    <p class="note">
-        画面をクリックしてキーボード入力を行います。
-    </p>
-
-</section>
-
-<footer>
-    MY ORIGINAL PC PROJECT
-    <br>
-    Powered by v86 Emulator
-</footer>
-
-<script src="./v86/libv86.js"></script>
-
-<script>
-"use strict";
-
-// ====================================
-// GLOBAL VARIABLES
-// ====================================
-
-let emulator = null;
-let poweredOn = false;
-let paused = false;
-let busy = false;
-
-// ====================================
-// HTML ELEMENTS
-// ====================================
-
-const $ = id => document.getElementById(id);
-
-// ====================================
-// FILE INFORMATION
-// ====================================
-
-function formatSize(bytes) {
-
-    if (bytes < 1024) {
-        return bytes + " B";
-    }
-
-    if (bytes < 1024 * 1024) {
-        return (bytes / 1024).toFixed(2) + " KB";
-    }
-
-    if (bytes < 1024 * 1024 * 1024) {
-        return (bytes / 1024 / 1024).toFixed(2) + " MB";
-    }
-
-    return (bytes / 1024 / 1024 / 1024).toFixed(2) + " GB";
-}
-
-const fileInputs = [
-    "cdrom",
-    "hda",
-    "hdb",
-    "fda",
-    "fdb"
-];
-
-for (const id of fileInputs) {
-
-    $(id).addEventListener("change", function() {
-
-        const file = this.files[0];
-
-        if (!file) {
-            $(id + "-info").textContent =
-                "ファイル未選択";
-            return;
-        }
-
-        $(id + "-info").textContent =
-            file.name + " / " + formatSize(file.size);
-
-    });
-
-}
-
-// ====================================
-// STATUS
-// ====================================
-
-function setStatus(message) {
-    $("status").textContent = message;
-}
-
-// ====================================
-// READ FILE
-// ====================================
-
-async function readSelectedFile(id) {
-
-    const file = $(id).files[0];
-
-    if (!file) {
-        return null;
-    }
-
-    setStatus("Reading " + file.name + "...");
-
-    return await file.arrayBuffer();
-}
-
-// ====================================
-// SCREEN RESET
-// ====================================
-
-function resetScreen() {
-
-    const screen = $("screen_container");
-
-    screen.innerHTML = `
-        <div style="
-            white-space:pre;
-            font:14px monospace;
-            line-height:14px;
-        "></div>
-        <canvas style="display:none"></canvas>
-    `;
-
-}
-
-// ====================================
-// BUTTON STATE
-// ====================================
-
-function updateButtons() {
-
-    $("start-button").disabled =
-        poweredOn || busy;
-
-    $("pause-button").disabled =
-        !poweredOn || busy;
-
-    $("restart-button").disabled =
-        !poweredOn || busy;
-
-    $("stop-button").disabled =
-        !poweredOn || busy;
-
-}
-
-// ====================================
-// POWER ON
-// ====================================
-
-async function powerOn() {
-
-    if (poweredOn || busy) {
-        return;
-    }
-
-    if (typeof V86 === "undefined") {
-
-        alert(
-            "libv86.jsを読み込めません。\n" +
-            "v86フォルダを確認してください。"
-        );
-
-        return;
-    }
-
-    busy = true;
-    updateButtons();
-
-    $("settings").classList.add("hidden");
-    $("runtime").classList.remove("hidden");
-
-    resetScreen();
-
-    setStatus("Preparing virtual PC...");
-
-    try {
-
-        // ファイルを読み込む
-        const cdrom = await readSelectedFile("cdrom");
-        const hda = await readSelectedFile("hda");
-        const hdb = await readSelectedFile("hdb");
-        const fda = await readSelectedFile("fda");
-        const fdb = await readSelectedFile("fdb");
-
-        // v86の設定
-        const options = {
-
-            wasm_path: "./v86/v86.wasm",
-
-            memory_size:
-                Number($("memory").value) *
-                1024 * 1024,
-
-            vga_memory_size:
-                8 * 1024 * 1024,
-
-            screen: {
-                container: $("screen_container"),
-                use_graphical_text: true
-            },
-
-            bios: {
-                url: "./seabios.bin"
-            },
-
-            vga_bios: {
-                url: "./vgabios.bin"
-            },
-
-            boot_order:
-                Number($("boot-order").value),
-
-            autostart: true
-
-        };
-
-        // CD-ROM
-        if (cdrom) {
-            options.cdrom = {
-                buffer: cdrom
-            };
-        }
-
-        // HDD 1
-        if (hda) {
-            options.hda = {
-                buffer: hda
-            };
-        }
-
-        // HDD 2
-        if (hdb) {
-            options.hdb = {
-                buffer: hdb
-            };
-        }
-
-        // Floppy 1
-        if (fda) {
-            options.fda = {
-                buffer: fda
-            };
-        }
-
-        // Floppy 2
-        if (fdb) {
-            options.fdb = {
-                buffer: fdb
-            };
-        }
-
-        setStatus("Starting v86...");
-
-        // Emulator start
-        emulator = new V86(options);
-
-        emulator.add_listener(
-            "emulator-ready",
-            function() {
-
-                poweredOn = true;
-                paused = false;
-                busy = false;
-
-                setStatus("READY - VIRTUAL PC RUNNING");
-
-                updateButtons();
-
-                $("screen_container").focus();
-
-            }
-        );
+<!DOCTYPE html> <html lang="ja"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <meta name="theme-color" content="#171717"> <title>MY ORIGINAL PC</title> 
 
-        emulator.add_listener(
-            "emulator-started",
-            function() {
+<style> :root { color-scheme: dark;--green: #00ff88;--background: #171717;--panel: #222;} 
 
-                if (!paused) {
-                    setStatus("RUNNING");
-                }
+{ box-sizing: border-box;} 
 
-            }
-        );
+body { margin: 0;padding: 24px 14px;background: var(--background);color: #eee;font-family: monospace;} 
 
-        emulator.add_listener(
-            "emulator-stopped",
-            function() {
+header { text-align: center;margin-bottom: 25px;} 
 
-                if (poweredOn && !paused) {
-                    setStatus("STOPPED");
-                }
+h1 { color: var(--green);letter-spacing: 2px;} 
 
-            }
-        );
+.subtitle { color: #999;} 
 
-        emulator.add_listener(
-            "download-error",
-            function(error) {
+.panel { width: 100%;max-width: 850px;margin: 18px auto;padding: 20px;background: var(--panel);border: 1px solid #444;border-radius: 8px;} 
 
-                console.error(
-                    "v86 download error:",
-                    error
-                );
+h2 { color: var(--green);font-size: 18px;border-bottom: 1px solid #444;padding-bottom: 10px;} 
 
-                setStatus(
-                    "LOAD ERROR: " +
-                    (error.file_name || "Unknown file")
-                );
+h3 { color: var(--green);font-size: 15px;margin-top: 24px;} 
 
-            }
-        );
+.field { margin: 16px 0;} 
 
-    } catch (error) {
+.field label { display: block;margin-bottom: 8px;} 
 
-        console.error(error);
+input[type="file"], input[type="number"], select { width: 100%;padding: 10px;background: #111;color: white;border: 1px solid #555;border-radius: 5px;} 
 
-        setStatus("ERROR: " + error.message);
+.file-info { color: #aaa;font-size: 12px;margin-top: 6px;overflow-wrap: anywhere;} 
 
-        if (emulator) {
-            try {
-                await emulator.destroy();
-            } catch (cleanupError) {
-                console.error(cleanupError);
-            }
-        }
+button { margin: 5px;padding: 11px 17px;background: #333;color: white;border: 1px solid var(--green);border-radius: 5px;font-family: monospace;cursor: pointer;} 
 
-        emulator = null;
-        poweredOn = false;
-        paused = false;
-        busy = false;
+button:hover:not(:disabled) { background: #006633;} 
 
-        $("runtime").classList.add("hidden");
-        $("settings").classList.remove("hidden");
+button:disabled { opacity: .45;cursor: not-allowed;} 
 
-        updateButtons();
+.primary { background: #006633;} 
 
-        alert(
-            "仮想PCの起動に失敗しました。\n" +
-            error.message
-        );
+.danger { border-color: #ff5555;} 
 
-    }
+.controls { display: flex;justify-content: center;flex-wrap: wrap;gap: 5px;} 
 
-}
+#status { color: var(--green);overflow-wrap: anywhere;} 
 
-// ====================================
-// PAUSE / RESUME
-// ====================================
+#screen_container { width: 100%;min-height: 300px;margin-top: 15px;padding: 10px;background: #000;border: 3px solid var(--green);overflow: auto;text-align: left;position: relative;} 
 
-async function togglePause() {
+/* v86の標準テキスト画面 */ #screen_container > div { white-space: pre;font: 14px monospace;line-height: 14px;text-align: left;} 
 
-    if (!emulator || !poweredOn || busy) {
-        return;
-    }
+/* VGA・グラフィック画面 */ #screen_container canvas { display: block;max-width: 100%;height: auto;image-rendering: pixelated;} 
 
-    busy = true;
-    updateButtons();
+#screen_container:focus { outline: 2px solid var(--green);} 
 
-    try {
+.note { color: #999;font-size: 12px;line-height: 1.7;} 
 
-        if (!paused) {
+.hidden { display: none !important;} 
 
-            await emulator.stop();
+footer { text-align: center;color: #666;font-size: 12px;margin: 35px 0;} </style> </head> 
 
-            paused = true;
+<body> 
 
-            $("pause-button").textContent = "RESUME";
+<header> <h1>MY ORIGINAL PC</h1><p class="subtitle">ORIGINAL x86 VIRTUAL COMPUTER</p></header> 
 
-            setStatus("PAUSED");
+<section class="panel" id="settings"> 
 
-        } else {
+<h2>VIRTUAL MACHINE SETTINGS</h2><h3>Memory</h3><div class="field">    <label for="memory">RAM容量</label>    <select id="memory">        <option value="64">64 MB</option>        <option value="128" selected>128 MB</option>        <option value="256">256 MB</option>        <option value="512">512 MB</option>    </select></div><h3>Storage Devices</h3><div class="field">    <label for="cdrom">CD-ROM / ISO</label>    <input type="file" id="cdrom"           accept=".iso,.img">    <div class="file-info" id="cdrom-info">        ファイル未選択    </div></div><div class="field">    <label for="hda">Hard Disk 1</label>    <input type="file" id="hda"           accept=".img,.bin,.hdd,.vhd">    <div class="file-info" id="hda-info">        ファイル未選択    </div></div><div class="field">    <label for="hdb">Hard Disk 2</label>    <input type="file" id="hdb"           accept=".img,.bin,.hdd,.vhd">    <div class="file-info" id="hdb-info">        ファイル未選択    </div></div><div class="field">    <label for="fda">Floppy Disk 1</label>    <input type="file" id="fda"           accept=".img,.ima,.flp">    <div class="file-info" id="fda-info">        ファイル未選択    </div></div><div class="field">    <label for="fdb">Floppy Disk 2</label>    <input type="file" id="fdb"           accept=".img,.ima,.flp">    <div class="file-info" id="fdb-info">        ファイル未選択    </div></div><h3>Boot Settings</h3><div class="field">    <label for="boot-order">起動順序</label>    <select id="boot-order">        <option value="0">Auto</option>        <option value="531">CD / Floppy / HDD</option>        <option value="291">CD / HDD / Floppy</option>        <option value="561">Floppy / CD / HDD</option>        <option value="801">Floppy / HDD / CD</option>        <option value="786">HDD / Floppy / CD</option>        <option value="306">HDD / CD / Floppy</option>    </select></div><p class="note">    ファイルはブラウザ内で読み込まれます。    GitHubへアップロードされることはありません。    HDDの変更内容は元のファイルには自動保存されません。</p><div class="controls">    <button class="primary" id="start-button">        POWER ON    </button></div> 
 
-            await emulator.run();
+</section> 
 
-            paused = false;
+<section class="panel hidden" id="runtime"> 
 
-            $("pause-button").textContent = "PAUSE";
+<h2>VIRTUAL MACHINE</h2><p>    STATUS:    <span id="status">OFF</span></p><div class="controls">    <button id="pause-button">PAUSE</button>    <button id="restart-button">RESTART</button>    <button class="danger" id="stop-button">        POWER OFF    </button>    <button id="fullscreen-button">        FULLSCREEN    </button></div><h3>VIRTUAL PC DISPLAY</h3><div id="screen_container" tabindex="0">    <div style="white-space:pre;font:14px monospace;line-height:14px"></div>    <canvas style="display:none"></canvas></div><p class="note">    画面をクリックしてキーボード入力を行います。</p> 
 
-            setStatus("RUNNING");
+</section> 
 
-        }
+<footer> MY ORIGINAL PC PROJECT<br>Powered by v86 Emulator</footer> 
 
-    } catch (error) {
+<script src="./v86/libv86.js"></script> 
 
-        console.error(error);
-        setStatus("PAUSE ERROR: " + error.message);
+<script> "use strict"; 
 
-    } finally {
+// ==================================== // GLOBAL VARIABLES // ==================================== 
 
-        busy = false;
-        updateButtons();
+let emulator = null; let poweredOn = false; let paused = false; let busy = false; 
 
-    }
+// ==================================== // HTML ELEMENTS // ==================================== 
 
-}
+const $ = id => document.getElementById(id); 
 
-// ====================================
-// RESTART
-// ====================================
+// ==================================== // FILE INFORMATION // ==================================== 
 
-async function restartPC() {
+function formatSize(bytes) { 
 
-    if (!emulator || !poweredOn || busy) {
-        return;
-    }
+if (bytes < 1024) {    return bytes + " B";}if (bytes < 1024 * 1024) {    return (bytes / 1024).toFixed(2) + " KB";}if (bytes < 1024 * 1024 * 1024) {    return (bytes / 1024 / 1024).toFixed(2) + " MB";}return (bytes / 1024 / 1024 / 1024).toFixed(2) + " GB"; 
 
-    busy = true;
-    updateButtons();
+} 
 
-    try {
+const fileInputs = [ "cdrom","hda","hdb","fda","fdb"]; 
 
-        paused = false;
+for (const id of fileInputs) { 
 
-        $("pause-button").textContent = "PAUSE";
+$(id).addEventListener("change", function() {    const file = this.files[0];    if (!file) {        $(id + "-info").textContent =            "ファイル未選択";        return;    }    $(id + "-info").textContent =        file.name + " / " + formatSize(file.size);}); 
 
-        setStatus("RESTARTING...");
+} 
 
-        emulator.restart();
+// ==================================== // STATUS // ==================================== 
 
-    } catch (error) {
+function setStatus(message) { $("status").textContent = message;} 
 
-        console.error(error);
-        setStatus("RESTART ERROR: " + error.message);
+// ==================================== // READ FILE // ==================================== 
 
-    } finally {
+async function readSelectedFile(id) { 
 
-        busy = false;
-        updateButtons();
+const file = $(id).files[0];if (!file) {    return null;}setStatus("Reading " + file.name + "...");return await file.arrayBuffer(); 
 
-    }
+} 
 
-}
+// ==================================== // SCREEN RESET // ==================================== 
 
-// ====================================
-// POWER OFF
-// ====================================
+function resetScreen() { 
 
-async function powerOff() {
+const screen = $("screen_container");screen.innerHTML = `    <div style="        white-space:pre;        font:14px monospace;        line-height:14px;    "></div>    <canvas style="display:none"></canvas>`; 
 
-    if (busy) {
-        return;
-    }
+} 
 
-    if (!emulator) {
-        return;
-    }
+// ==================================== // BUTTON STATE // ==================================== 
 
-    busy = true;
-    updateButtons();
+function updateButtons() { 
 
-    setStatus("POWERING OFF...");
+$("start-button").disabled =    poweredOn || busy;$("pause-button").disabled =    !poweredOn || busy;$("restart-button").disabled =    !poweredOn || busy;$("stop-button").disabled =    !poweredOn || busy; 
 
-    try {
+} 
 
-        await emulator.stop();
-        await emulator.destroy();
+// ==================================== // POWER ON // ==================================== 
 
-    } catch (error) {
+async function powerOn() { 
 
-        console.error(error);
+if (poweredOn || busy) {    return;}if (typeof V86 === "undefined") {    alert(        "libv86.jsを読み込めません。\n" +        "v86フォルダを確認してください。"    );    return;}busy = true;updateButtons();$("settings").classList.add("hidden");$("runtime").classList.remove("hidden");resetScreen();setStatus("Preparing virtual PC...");try {    // ファイルを読み込む    const cdrom = await readSelectedFile("cdrom");    const hda = await readSelectedFile("hda");    const hdb = await readSelectedFile("hdb");    const fda = await readSelectedFile("fda");    const fdb = await readSelectedFile("fdb");    // v86の設定    const options = {        wasm_path: "./v86/v86.wasm",        memory_size:            Number($("memory").value) *            1024 * 1024,        vga_memory_size:            8 * 1024 * 1024,        screen: {            container: $("screen_container"),            use_graphical_text: true        },        bios: {            url: "./seabios.bin"        },        vga_bios: {            url: "./vgabios.bin"        },        boot_order:            Number($("boot-order").value),        autostart: true    };    // CD-ROM    if (cdrom) {        options.cdrom = {            buffer: cdrom        };    }    // HDD 1    if (hda) {        options.hda = {            buffer: hda        };    }    // HDD 2    if (hdb) {        options.hdb = {            buffer: hdb        };    }    // Floppy 1    if (fda) {        options.fda = {            buffer: fda        };    }    // Floppy 2    if (fdb) {        options.fdb = {            buffer: fdb        };    }    setStatus("Starting v86...");    // Emulator start    emulator = new V86(options);    emulator.add_listener(        "emulator-ready",        function() {            poweredOn = true;            paused = false;            busy = false;            setStatus("READY - VIRTUAL PC RUNNING");            updateButtons();            $("screen_container").focus();        }    );    emulator.add_listener(        "emulator-started",        function() {            if (!paused) {                setStatus("RUNNING");            }        }    );    emulator.add_listener(        "emulator-stopped",        function() {            if (poweredOn && !paused) {                setStatus("STOPPED");            }        }    );    emulator.add_listener(        "download-error",        function(error) {            console.error(                "v86 download error:",                error            );            setStatus(                "LOAD ERROR: " +                (error.file_name || "Unknown file")            );        }    );} catch (error) {    console.error(error);    setStatus("ERROR: " + error.message);    if (emulator) {        try {            await emulator.destroy();        } catch (cleanupError) {            console.error(cleanupError);        }    }    emulator = null;    poweredOn = false;    paused = false;    busy = false;    $("runtime").classList.add("hidden");    $("settings").classList.remove("hidden");    updateButtons();    alert(        "仮想PCの起動に失敗しました。\n" +        error.message    );} 
 
-    } finally {
+} 
 
-        emulator = null;
-        poweredOn = false;
-        paused = false;
-        busy = false;
+// ==================================== // PAUSE / RESUME // ==================================== 
 
-        $("pause-button").textContent = "PAUSE";
+async function togglePause() { 
 
-        $("runtime").classList.add("hidden");
-        $("settings").classList.remove("hidden");
+if (!emulator || !poweredOn || busy) {    return;}busy = true;updateButtons();try {    if (!paused) {        await emulator.stop();        paused = true;        $("pause-button").textContent = "RESUME";        setStatus("PAUSED");    } else {        await emulator.run();        paused = false;        $("pause-button").textContent = "PAUSE";        setStatus("RUNNING");    }} catch (error) {    console.error(error);    setStatus("PAUSE ERROR: " + error.message);} finally {    busy = false;    updateButtons();} 
 
-        resetScreen();
+} 
 
-        setStatus("OFF");
+// ==================================== // RESTART // ==================================== 
 
-        updateButtons();
+async function restartPC() { 
 
-    }
+if (!emulator || !poweredOn || busy) {    return;}busy = true;updateButtons();try {    paused = false;    $("pause-button").textContent = "PAUSE";    setStatus("RESTARTING...");    emulator.restart();} catch (error) {    console.error(error);    setStatus("RESTART ERROR: " + error.message);} finally {    busy = false;    updateButtons();} 
 
-}
+} 
 
-// ====================================
-// FULLSCREEN
-// ====================================
+// ==================================== // POWER OFF // ==================================== 
 
-function fullscreen() {
+async function powerOff() { 
 
-    if (!emulator) {
-        return;
-    }
+if (busy) {    return;}if (!emulator) {    return;}busy = true;updateButtons();setStatus("POWERING OFF...");try {    await emulator.stop();    await emulator.destroy();} catch (error) {    console.error(error);} finally {    emulator = null;    poweredOn = false;    paused = false;    busy = false;    $("pause-button").textContent = "PAUSE";    $("runtime").classList.add("hidden");    $("settings").classList.remove("hidden");    resetScreen();    setStatus("OFF");    updateButtons();} 
 
-    try {
+} 
 
-        emulator.screen_go_fullscreen();
+// ==================================== // FULLSCREEN // ==================================== 
 
-    } catch (error) {
+function fullscreen() { 
 
-        console.error(error);
+if (!emulator) {    return;}try {    emulator.screen_go_fullscreen();} catch (error) {    console.error(error);    setStatus("FULLSCREEN ERROR");} 
 
-        setStatus("FULLSCREEN ERROR");
+} 
 
-    }
+// ==================================== // EVENT LISTENERS // ==================================== 
 
-}
+$("start-button").addEventListener( "click",powerOn); 
 
-// ====================================
-// EVENT LISTENERS
-// ====================================
+$("pause-button").addEventListener( "click",togglePause); 
 
-$("start-button").addEventListener(
-    "click",
-    powerOn
-);
+$("restart-button").addEventListener( "click",restartPC); 
 
-$("pause-button").addEventListener(
-    "click",
-    togglePause
-);
+$("stop-button").addEventListener( "click",powerOff); 
 
-$("restart-button").addEventListener(
-    "click",
-    restartPC
-);
+$("fullscreen-button").addEventListener( "click",fullscreen); 
 
-$("stop-button").addEventListener(
-    "click",
-    powerOff
-);
+// Initial state updateButtons(); 
 
-$("fullscreen-button").addEventListener(
-    "click",
-    fullscreen
-);
+</script> 
 
-// Initial state
-updateButtons();
-
-</script>
-
-</body>
-</html>
+</body> </html> 
