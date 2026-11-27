@@ -203,7 +203,8 @@ footer {
     margin-top: 8px;
 }
 
-/* 仮想キーボード */
+
+/* Windows JIS Virtual Keyboard */
 
 #virtual-keyboard {
     margin-top: 20px;
@@ -211,56 +212,72 @@ footer {
     background: #202020;
     border: 1px solid #555;
     border-radius: 8px;
+    overflow-x: auto;
 }
 
 .keyboard-title {
     color: var(--green);
     text-align: center;
     margin-bottom: 12px;
+    font-weight: bold;
+}
+
+.keyboard-layout {
+    min-width: 850px;
 }
 
 .keyboard-row {
     display: flex;
     justify-content: center;
-    gap: 5px;
-    margin: 6px 0;
+    gap: 4px;
+    margin: 5px 0;
 }
 
 .key {
-    min-width: 42px;
-    min-height: 42px;
     flex: 1;
-    max-width: 65px;
+    min-width: 0;
+    height: 43px;
     margin: 0;
-    padding: 8px 4px;
+    padding: 4px;
     background: #111;
     border: 1px solid #555;
     border-radius: 5px;
     color: white;
+    font-family: monospace;
+    font-size: 12px;
     font-weight: bold;
     user-select: none;
     -webkit-user-select: none;
     touch-action: none;
 }
 
+.key.wide {
+    flex: 1.5;
+}
+
+.key.extra-wide {
+    flex: 2;
+}
+
+.key.space {
+    flex: 5;
+}
+
 .key.active {
     background: #006633;
     border-color: var(--green);
+    color: white;
 }
 
 .key:disabled {
-    opacity: .3;
-}
-
-.key.wide {
-    max-width: 110px;
+    opacity: .4;
 }
 
 #keyboard-message {
     text-align: center;
     color: #999;
     font-size: 12px;
-    margin-top: 10px;
+    margin-top: 12px;
 }
 </style>
 </head>
