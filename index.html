@@ -460,22 +460,163 @@ footer {
     画面をクリックしてキーボード入力を行います。
 </p>
 
+
 <!-- VIRTUAL KEYBOARD -->
 
 <div id="virtual-keyboard">
 
     <div class="keyboard-title">
-        VIRTUAL KEYBOARD
+        WINDOWS JAPANESE JIS KEYBOARD
     </div>
 
-    <div class="keyboard-row">
-        <button class="key" id="key-a"
-                type="button">A</button>
+    <div class="keyboard-layout">
+
+        <!-- Function keys -->
+        <div class="keyboard-row">
+            <button class="key" data-code="01">Esc</button>
+            <button class="key" data-code="3B">F1</button>
+            <button class="key" data-code="3C">F2</button>
+            <button class="key" data-code="3D">F3</button>
+            <button class="key" data-code="3E">F4</button>
+            <button class="key" data-code="3F">F5</button>
+            <button class="key" data-code="40">F6</button>
+            <button class="key" data-code="41">F7</button>
+            <button class="key" data-code="42">F8</button>
+            <button class="key" data-code="43">F9</button>
+            <button class="key" data-code="44">F10</button>
+            <button class="key" data-code="57">F11</button>
+            <button class="key" data-code="58">F12</button>
+        </div>
+
+        <!-- Number row -->
+        <div class="keyboard-row">
+            <button class="key" data-code="29">半角</button>
+            <button class="key" data-code="02">1</button>
+            <button class="key" data-code="03">2</button>
+            <button class="key" data-code="04">3</button>
+            <button class="key" data-code="05">4</button>
+            <button class="key" data-code="06">5</button>
+            <button class="key" data-code="07">6</button>
+            <button class="key" data-code="08">7</button>
+            <button class="key" data-code="09">8</button>
+            <button class="key" data-code="0A">9</button>
+            <button class="key" data-code="0B">0</button>
+            <button class="key" data-code="0C">-</button>
+            <button class="key" data-code="0D">^</button>
+            <button class="key wide" data-code="7D">¥</button>
+            <button class="key wide" data-code="0E">BS</button>
+        </div>
+
+        <!-- QWERTY row -->
+        <div class="keyboard-row">
+            <button class="key wide" data-code="0F">Tab</button>
+            <button class="key" data-code="10">Q</button>
+            <button class="key" data-code="11">W</button>
+            <button class="key" data-code="12">E</button>
+            <button class="key" data-code="13">R</button>
+            <button class="key" data-code="14">T</button>
+            <button class="key" data-code="15">Y</button>
+            <button class="key" data-code="16">U</button>
+            <button class="key" data-code="17">I</button>
+            <button class="key" data-code="18">O</button>
+            <button class="key" data-code="19">P</button>
+            <button class="key" data-code="1A">@</button>
+            <button class="key" data-code="1B">[</button>
+            <button class="key wide" data-code="1C">Enter</button>
+        </div>
+
+        <!-- ASDF row -->
+        <div class="keyboard-row">
+            <button class="key wide" data-code="3A">Caps</button>
+            <button class="key" data-code="1E">A</button>
+            <button class="key" data-code="1F">S</button>
+            <button class="key" data-code="20">D</button>
+            <button class="key" data-code="21">F</button>
+            <button class="key" data-code="22">G</button>
+            <button class="key" data-code="23">H</button>
+            <button class="key" data-code="24">J</button>
+            <button class="key" data-code="25">K</button>
+            <button class="key" data-code="26">L</button>
+            <button class="key" data-code="27">;</button>
+            <button class="key" data-code="28">:</button>
+            <button class="key" data-code="2B">]</button>
+        </div>
+
+        <!-- ZXCV row -->
+        <div class="keyboard-row">
+            <button class="key wide" data-code="2A">Shift</button>
+            <button class="key" data-code="2C">Z</button>
+            <button class="key" data-code="2D">X</button>
+            <button class="key" data-code="2E">C</button>
+            <button class="key" data-code="2F">V</button>
+            <button class="key" data-code="30">B</button>
+            <button class="key" data-code="31">N</button>
+            <button class="key" data-code="32">M</button>
+            <button class="key" data-code="33">,</button>
+            <button class="key" data-code="34">.</button>
+            <button class="key" data-code="35">/</button>
+            <button class="key wide" data-code="73">ろ</button>
+            <button class="key wide" data-code="36">Shift</button>
+        </div>
+
+        <!-- Bottom row -->
+        <div class="keyboard-row">
+            <button class="key" data-code="1D">Ctrl</button>
+            <button class="key" data-code="E05B">Win</button>
+            <button class="key" data-code="38">Alt</button>
+            <button class="key" data-code="7B">無変換</button>
+            <button class="key space" data-code="39">SPACE</button>
+            <button class="key" data-code="79">変換</button>
+            <button class="key" data-code="70">かな</button>
+            <button class="key" data-code="E038">Alt</button>
+            <button class="key" data-code="E01D">Ctrl</button>
+        </div>
+
+        <!-- Navigation -->
+        <div class="keyboard-row">
+            <button class="key" data-code="E052">Ins</button>
+            <button class="key" data-code="E053">Del</button>
+            <button class="key" data-code="E047">Home</button>
+            <button class="key" data-code="E04F">End</button>
+            <button class="key" data-code="E049">PgUp</button>
+            <button class="key" data-code="E051">PgDn</button>
+            <button class="key" data-code="E048">↑</button>
+            <button class="key" data-code="E04B">←</button>
+            <button class="key" data-code="E050">↓</button>
+            <button class="key" data-code="E04D">→</button>
+        </div>
+
+        <!-- Numeric keypad -->
+        <div class="keyboard-row">
+            <button class="key" data-code="45">Num</button>
+            <button class="key" data-code="E035">/</button>
+            <button class="key" data-code="37">*</button>
+            <button class="key" data-code="4A">-</button>
+            <button class="key" data-code="47">7</button>
+            <button class="key" data-code="48">8</button>
+            <button class="key" data-code="49">9</button>
+            <button class="key" data-code="4E">+</button>
+        </div>
+
+        <div class="keyboard-row">
+            <button class="key" data-code="4B">4</button>
+            <button class="key" data-code="4C">5</button>
+            <button class="key" data-code="4D">6</button>
+            <button class="key" data-code="4F">1</button>
+            <button class="key" data-code="50">2</button>
+            <button class="key" data-code="51">3</button>
+            <button class="key" data-code="E01C">Enter</button>
+        </div>
+
+        <div class="keyboard-row">
+            <button class="key extra-wide" data-code="52">0</button>
+            <button class="key" data-code="53">.</button>
+        </div>
+
     </div>
 
     <div id="keyboard-message">
-        Aキーのみ動作します。
-        その他のキーは今後実装予定です。
+        Windows JIS keyboard / v86 PS/2
     </div>
 
 </div>
@@ -500,8 +641,6 @@ let emulator = null;
 let poweredOn = false;
 let paused = false;
 let busy = false;
-
-let aKeyPressed = false;
 
 // 作成したHDDを保持
 const createdDisks = new Map();
@@ -829,107 +968,157 @@ function resetScreen() {
     `;
 }
 
+
 // ====================================
-// KEYBOARD
+// VIRTUAL KEYBOARD
 // ====================================
 
-function releaseAKey() {
+const pressedKeys = new Map();
 
-    if (!aKeyPressed) {
-        return;
+function sendKeyDown(code) {
+
+    if (!emulator || !poweredOn || paused || busy) {
+        return false;
     }
 
-    aKeyPressed = false;
-
-    $("key-a").classList.remove("active");
-
-    if (
-        emulator &&
-        poweredOn &&
-        typeof emulator.keyboard_send_scancodes === "function"
-    ) {
-        try {
-            emulator.keyboard_send_scancodes([0x9E]);
-        } catch (error) {
-            console.error("Key release error:", error);
-        }
-    }
-}
-
-function pressAKey(event) {
-
-    if (event.cancelable) {
-        event.preventDefault();
-    }
-
-    if (
-        !emulator ||
-        !poweredOn ||
-        paused ||
-        busy ||
-        aKeyPressed
-    ) {
-        return;
-    }
-
-    if (
-        typeof emulator.keyboard_send_scancodes !== "function"
-    ) {
+    if (typeof emulator.keyboard_send_scancodes !== "function") {
         $("keyboard-message").textContent =
             "このv86ではキーボードAPIを利用できません。";
-
-        return;
+        return false;
     }
 
+    const extended = code.startsWith("E0");
+    const scan = parseInt(
+        extended ? code.substring(2) : code,
+        16
+    );
+
+    if (Number.isNaN(scan)) {
+        return false;
+    }
+
+    const sequence = extended
+        ? [0xE0, scan]
+        : [scan];
+
     try {
-
-        emulator.keyboard_send_scancodes([0x1E]);
-
-        aKeyPressed = true;
-
-        $("key-a").classList.add("active");
-
+        emulator.keyboard_send_scancodes(sequence);
+        return true;
     } catch (error) {
-
-        console.error("Key press error:", error);
-
-        $("keyboard-message").textContent =
-            "キー入力エラー: " + error.message;
+        console.error("Key down error:", error);
+        return false;
     }
 }
 
-const keyA = $("key-a");
+function sendKeyUp(code) {
 
-keyA.addEventListener("pointerdown", event => {
-
-    pressAKey(event);
-
-    if (aKeyPressed) {
-
-        try {
-            keyA.setPointerCapture(event.pointerId);
-        } catch (error) {
-            console.warn(error);
-        }
+    if (!emulator || !poweredOn) {
+        return;
     }
-});
 
-keyA.addEventListener("pointerup", releaseAKey);
-keyA.addEventListener("pointercancel", releaseAKey);
-keyA.addEventListener("lostpointercapture", releaseAKey);
-keyA.addEventListener("contextmenu", event => {
+    const extended = code.startsWith("E0");
+    const scan = parseInt(
+        extended ? code.substring(2) : code,
+        16
+    );
+
+    if (Number.isNaN(scan)) {
+        return;
+    }
+
+    const release = scan | 0x80;
+
+    const sequence = extended
+        ? [0xE0, release]
+        : [release];
+
+    try {
+        emulator.keyboard_send_scancodes(sequence);
+    } catch (error) {
+        console.error("Key up error:", error);
+    }
+}
+
+function pressVirtualKey(button, event) {
+
     event.preventDefault();
+
+    const code = button.dataset.code;
+
+    if (!code || pressedKeys.has(code)) {
+        return;
+    }
+
+    if (!sendKeyDown(code)) {
+        return;
+    }
+
+    pressedKeys.set(code, button);
+    button.classList.add("active");
+
+    try {
+        button.setPointerCapture(event.pointerId);
+    } catch (error) {
+        console.warn(error);
+    }
+}
+
+function releaseVirtualKey(code) {
+
+    if (!pressedKeys.has(code)) {
+        return;
+    }
+
+    const button = pressedKeys.get(code);
+
+    pressedKeys.delete(code);
+
+    button.classList.remove("active");
+
+    sendKeyUp(code);
+}
+
+function releaseAllVirtualKeys() {
+
+    for (const code of Array.from(pressedKeys.keys())) {
+        releaseVirtualKey(code);
+    }
+}
+
+document.querySelectorAll(
+    "#virtual-keyboard .key"
+).forEach(button => {
+
+    button.addEventListener("pointerdown", event => {
+        pressVirtualKey(button, event);
+    });
+
+    button.addEventListener("pointerup", () => {
+        releaseVirtualKey(button.dataset.code);
+    });
+
+    button.addEventListener("pointercancel", () => {
+        releaseVirtualKey(button.dataset.code);
+    });
+
+    button.addEventListener("lostpointercapture", () => {
+        releaseVirtualKey(button.dataset.code);
+    });
+
+    button.addEventListener("contextmenu", event => {
+        event.preventDefault();
+    });
+
 });
 
-// ブラウザから離れた場合
-window.addEventListener("blur", releaseAKey);
+// ブラウザから離れた場合、全キーを解放
+
+window.addEventListener("blur", releaseAllVirtualKeys);
 
 document.addEventListener("visibilitychange", () => {
-
     if (document.hidden) {
-        releaseAKey();
+        releaseAllVirtualKeys();
     }
-
 });
 
 // ====================================
@@ -1186,7 +1375,7 @@ async function togglePause() {
 
         if (!paused) {
 
-            releaseAKey();
+            releaseAllVirtualKeys();
 
             await emulator.stop();
 
@@ -1237,8 +1426,8 @@ async function restartPC() {
     updateButtons();
 
     try {
+        releaseAllVirtualKeys();
 
-        releaseAKey();
 
         paused = false;
 
@@ -1280,7 +1469,7 @@ async function powerOff() {
     busy = true;
     updateButtons();
 
-    releaseAKey();
+    releaseAllVirtualKeys();
 
     setStatus("POWERING OFF...");
 
