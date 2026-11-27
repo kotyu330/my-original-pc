@@ -1,4 +1,4 @@
-# my-original-pc
+# my-original-pc (MOP by ko)
 
 サイト|https://kotyu330.github.io/my-original-pc/
 
