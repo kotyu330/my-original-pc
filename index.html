@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#171717">
-<title>MOP(my-original-pc)</title>
+<title>MY ORIGINAL PC</title>
 
 <style>
 :root {
@@ -203,6 +203,17 @@ footer {
     margin-top: 8px;
 }
 
+.disk-progress {
+    width: 100%;
+    height: 18px;
+    accent-color: var(--green);
+}
+
+.disk-progress-status {
+    color: var(--green);
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
 
 /* Windows JIS Virtual Keyboard */
 
@@ -323,6 +334,7 @@ footer {
     <div class="file-info" id="hda-info">
         ファイル未選択
     </div>
+
     <label for="hda-created">または作成済みHDDを選択</label>
     <select id="hda-created">
         <option value="">選択なし</option>
@@ -335,6 +347,7 @@ footer {
     <div class="file-info" id="hdb-info">
         ファイル未選択
     </div>
+
     <label for="hdb-created">または作成済みHDDを選択</label>
     <select id="hdb-created">
         <option value="">選択なし</option>
@@ -393,30 +406,73 @@ footer {
 <h2>VIRTUAL HDD MANAGER</h2>
 
 <p class="note">
-    新しい仮想HDDを作成できます。
-    作成したRAWイメージはダウンロードできます。
+    RAW形式の仮想HDDを作成します。
+    最大50GBまで指定できます。
+    大容量ファイルはメモリに一括展開せず、分割して保存します。
 </p>
 
 <div class="field">
     <label for="disk-name">HDD Name</label>
-    <input type="text" id="disk-name"
-           value="MY VIRTUAL HDD">
+    <input
+        type="text"
+        id="disk-name"
+        value="MY VIRTUAL HDD"
+        maxlength="80"
+    >
 </div>
 
 <div class="field">
-    <label for="disk-size">HDD Capacity (MB)</label>
-    <input type="number" id="disk-size"
-           value="32" min="1" max="256">
+    <label for="disk-size">HDD Capacity</label>
+
+    <input
+        type="number"
+        id="disk-size"
+        value="10"
+        min="1"
+        max="50"
+        step="1"
+    >
+
+    <select id="disk-unit">
+        <option value="GB" selected>GB (1GB = 1024MB)</option>
+        <option value="MB">MB</option>
+    </select>
+
     <p class="note">
-        現在の試作版は1～256MBです。
-        大容量ディスクは今後対応予定です。
+        GB指定時は1～50GB、MB指定時は1～512MBです。
     </p>
 </div>
 
 <div class="controls">
-    <button class="primary" id="create-disk-button">
+    <button
+        class="primary"
+        id="create-disk-button"
+    >
         CREATE VIRTUAL HDD
     </button>
+
+    <button
+        id="cancel-disk-button"
+        disabled
+    >
+        CANCEL
+    </button>
+</div>
+
+<div id="disk-progress-area" class="hidden">
+    <progress
+        id="disk-progress"
+        class="disk-progress"
+        value="0"
+        max="100"
+    ></progress>
+
+    <p
+        id="disk-progress-status"
+        class="disk-progress-status"
+    >
+        Waiting...
+    </p>
 </div>
 
 <h3>Created HDD List</h3>
@@ -424,6 +480,11 @@ footer {
 <div id="disk-list">
     <p class="note">HDDはまだありません。</p>
 </div>
+
+<p class="note">
+    ※作成したHDDのファイルは、選択した保存先に直接保存されます。
+    一覧はこのページを開いている間だけ保持されます。
+</p>
 
 </section>
 
@@ -460,7 +521,6 @@ footer {
     画面をクリックしてキーボード入力を行います。
 </p>
 
-
 <!-- VIRTUAL KEYBOARD -->
 
 <div id="virtual-keyboard">
@@ -471,7 +531,6 @@ footer {
 
     <div class="keyboard-layout">
 
-        <!-- Function keys -->
         <div class="keyboard-row">
             <button class="key" data-code="01">Esc</button>
             <button class="key" data-code="3B">F1</button>
@@ -488,7 +547,6 @@ footer {
             <button class="key" data-code="58">F12</button>
         </div>
 
-        <!-- Number row -->
         <div class="keyboard-row">
             <button class="key" data-code="29">半角</button>
             <button class="key" data-code="02">1</button>
@@ -507,7 +565,6 @@ footer {
             <button class="key wide" data-code="0E">BS</button>
         </div>
 
-        <!-- QWERTY row -->
         <div class="keyboard-row">
             <button class="key wide" data-code="0F">Tab</button>
             <button class="key" data-code="10">Q</button>
@@ -525,7 +582,6 @@ footer {
             <button class="key wide" data-code="1C">Enter</button>
         </div>
 
-        <!-- ASDF row -->
         <div class="keyboard-row">
             <button class="key wide" data-code="3A">Caps</button>
             <button class="key" data-code="1E">A</button>
@@ -542,7 +598,6 @@ footer {
             <button class="key" data-code="2B">]</button>
         </div>
 
-        <!-- ZXCV row -->
         <div class="keyboard-row">
             <button class="key wide" data-code="2A">Shift</button>
             <button class="key" data-code="2C">Z</button>
@@ -559,7 +614,6 @@ footer {
             <button class="key wide" data-code="36">Shift</button>
         </div>
 
-        <!-- Bottom row -->
         <div class="keyboard-row">
             <button class="key" data-code="1D">Ctrl</button>
             <button class="key" data-code="E05B">Win</button>
@@ -572,7 +626,6 @@ footer {
             <button class="key" data-code="E01D">Ctrl</button>
         </div>
 
-        <!-- Navigation -->
         <div class="keyboard-row">
             <button class="key" data-code="E052">Ins</button>
             <button class="key" data-code="E053">Del</button>
@@ -586,7 +639,6 @@ footer {
             <button class="key" data-code="E04D">→</button>
         </div>
 
-        <!-- Numeric keypad -->
         <div class="keyboard-row">
             <button class="key" data-code="45">Num</button>
             <button class="key" data-code="E035">/</button>
@@ -642,10 +694,15 @@ let poweredOn = false;
 let paused = false;
 let busy = false;
 
-// 作成したHDDを保持
 const createdDisks = new Map();
-
 let nextDiskId = 1;
+
+let diskCreationCancelled = false;
+let diskCreationRunning = false;
+
+// v86の通常buffer接続で読み込むHDDの上限
+// 大容量HDDを誤って全体読み込みしないための安全制限
+const MAX_V86_BUFFER_SIZE = 512 * 1024 * 1024;
 
 // ====================================
 // HTML ELEMENTS
@@ -658,7 +715,6 @@ const $ = id => document.getElementById(id);
 // ====================================
 
 function formatSize(bytes) {
-
     if (bytes < 1024) {
         return bytes + " B";
     }
@@ -679,9 +735,7 @@ const fileInputs = [
 ];
 
 for (const id of fileInputs) {
-
     $(id).addEventListener("change", function() {
-
         const file = this.files[0];
 
         if (!file) {
@@ -691,9 +745,7 @@ for (const id of fileInputs) {
 
         $(id + "-info").textContent =
             file.name + " / " + formatSize(file.size);
-
     });
-
 }
 
 // ====================================
@@ -709,11 +761,21 @@ function setStatus(message) {
 // ====================================
 
 async function readSelectedFile(id) {
-
     const file = $(id).files[0];
 
     if (!file) {
         return null;
+    }
+
+    if (
+        (id === "hda" || id === "hdb") &&
+        file.size > MAX_V86_BUFFER_SIZE
+    ) {
+        throw new Error(
+            "このHDDは512MBを超えています。\n" +
+            "現在のv86接続方式ではHDD全体をメモリに読み込むため、" +
+            "このサイズのHDDは接続できません。"
+        );
     }
 
     setStatus("Reading " + file.name + "...");
@@ -726,12 +788,10 @@ async function readSelectedFile(id) {
 // ====================================
 
 function updateDiskSelectors() {
-
     for (const selectorId of [
         "hda-created",
         "hdb-created"
     ]) {
-
         const selector = $(selectorId);
         const previous = selector.value;
 
@@ -739,42 +799,46 @@ function updateDiskSelectors() {
             '<option value="">選択なし</option>';
 
         for (const [id, disk] of createdDisks) {
-
             const option = document.createElement("option");
 
             option.value = String(id);
 
             option.textContent =
-                disk.name + " (" +
-                formatSize(disk.size) + ")";
+                disk.name + " (" + formatSize(disk.size) + ")";
+
+            // 大容量HDDは現在のv86接続方式では読み込まない
+            if (disk.size > MAX_V86_BUFFER_SIZE) {
+                option.disabled = true;
+                option.textContent += " - 大容量接続未対応";
+            }
 
             selector.appendChild(option);
         }
 
         if (createdDisks.has(Number(previous))) {
-            selector.value = previous;
+            const disk = createdDisks.get(Number(previous));
+
+            if (disk.size <= MAX_V86_BUFFER_SIZE) {
+                selector.value = previous;
+            }
         }
     }
 }
 
 function renderDiskList() {
-
     const list = $("disk-list");
 
     list.innerHTML = "";
 
     if (createdDisks.size === 0) {
-
         list.textContent = "HDDはまだありません。";
         list.className = "note";
-
         return;
     }
 
     list.className = "";
 
     for (const [id, disk] of createdDisks) {
-
         const card = document.createElement("div");
         card.className = "disk-card";
 
@@ -784,45 +848,67 @@ function renderDiskList() {
         const info = document.createElement("p");
         info.textContent =
             "Capacity: " + formatSize(disk.size) +
-            " / RAW";
+            " / RAW image";
+
+        const saved = document.createElement("p");
+        saved.className = "note";
+        saved.textContent =
+            "保存ファイル: " + disk.fileName;
 
         const actions = document.createElement("div");
         actions.className = "disk-actions";
 
-        const downloadButton = document.createElement("button");
-        downloadButton.textContent = "DOWNLOAD";
+        const hdaButton = document.createElement("button");
+        hdaButton.textContent = "USE AS HDD 1";
+        hdaButton.disabled =
+            disk.size > MAX_V86_BUFFER_SIZE;
 
-        downloadButton.addEventListener("click", () => {
+        hdaButton.addEventListener("click", () => {
+            if (poweredOn || busy) return;
 
-            const url = URL.createObjectURL(disk.blob);
-
-            const link = document.createElement("a");
-
-            link.href = url;
-            link.download = disk.fileName;
-
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
-
-            setTimeout(() => {
-                URL.revokeObjectURL(url);
-            }, 60000);
-
+            $("hda").value = "";
+            $("hda-created").value = String(id);
+            $("hda-info").textContent =
+                "作成済みHDDを使用: " + disk.name;
+            $("hda-created").scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
         });
 
-        const deleteButton = document.createElement("button");
-        deleteButton.textContent = "DELETE";
-        deleteButton.className = "danger";
+        const hdbButton = document.createElement("button");
+        hdbButton.textContent = "USE AS HDD 2";
+        hdbButton.disabled =
+            disk.size > MAX_V86_BUFFER_SIZE;
 
-        deleteButton.addEventListener("click", () => {
+        hdbButton.addEventListener("click", () => {
+            if (poweredOn || busy) return;
 
+            $("hdb").value = "";
+            $("hdb-created").value = String(id);
+            $("hdb-info").textContent =
+                "作成済みHDDを使用: " + disk.name;
+            $("hdb-created").scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+        });
+
+        const removeButton = document.createElement("button");
+        removeButton.textContent = "REMOVE FROM LIST";
+        removeButton.className = "danger";
+
+        removeButton.addEventListener("click", () => {
             if (poweredOn || busy) {
-                alert("仮想PCの電源を切ってから削除してください。");
+                alert("仮想PCの電源を切ってから操作してください。");
                 return;
             }
 
-            if (!confirm(disk.name + " を削除しますか？")) {
+            if (!confirm(
+                disk.name +
+                " を一覧から取り除きますか？\n" +
+                "保存済みのファイル自体は削除されません。"
+            )) {
                 return;
             }
 
@@ -830,91 +916,244 @@ function renderDiskList() {
 
             updateDiskSelectors();
             renderDiskList();
-
         });
 
-        actions.append(downloadButton, deleteButton);
+        actions.append(
+            hdaButton,
+            hdbButton,
+            removeButton
+        );
 
-        card.append(title, info, actions);
+        card.append(
+            title,
+            info,
+            saved,
+            actions
+        );
 
         list.appendChild(card);
     }
 }
 
-function createVirtualDisk() {
+// ====================================
+// CREATE LARGE VIRTUAL DISK
+// ====================================
 
-    if (busy || poweredOn) {
-        alert("仮想PCの電源を切ってから作成してください。");
+function setDiskCreationUI(running) {
+    $("create-disk-button").disabled = running;
+    $("cancel-disk-button").disabled = !running;
+    $("disk-name").disabled = running;
+    $("disk-size").disabled = running;
+    $("disk-unit").disabled = running;
+}
+
+function cancelDiskCreation() {
+    if (!diskCreationRunning) return;
+
+    diskCreationCancelled = true;
+
+    $("disk-progress-status").textContent =
+        "キャンセル処理中...";
+}
+
+async function createVirtualDisk() {
+    if (diskCreationRunning || busy || poweredOn) {
         return;
     }
 
-    const name =
-        $("disk-name").value.trim();
-
-    const sizeMB =
-        Number($("disk-size").value);
+    const name = $("disk-name").value.trim();
+    const amount = Number($("disk-size").value);
+    const unit = $("disk-unit").value;
 
     if (!name) {
         alert("HDD名を入力してください。");
         return;
     }
 
-    if (
-        !Number.isInteger(sizeMB) ||
-        sizeMB < 1 ||
-        sizeMB > 256
-    ) {
-        alert("容量は1～256MBで指定してください。");
+    if (!Number.isInteger(amount) || amount < 1) {
+        alert("容量を正しく入力してください。");
         return;
     }
 
-    const sizeBytes = sizeMB * 1024 * 1024;
+    let sizeBytes;
 
-    const chunkSize = 1024 * 1024;
+    if (unit === "GB") {
+        if (amount > 50) {
+            alert("GB指定時の最大容量は50GBです。");
+            return;
+        }
 
-    const zeroChunk = new Uint8Array(chunkSize);
+        sizeBytes =
+            amount * 1024 * 1024 * 1024;
+    } else {
+        if (amount > 512) {
+            alert("MB指定時の最大容量は512MBです。");
+            return;
+        }
 
-    const chunks = [];
-
-    for (
-        let remaining = sizeBytes;
-        remaining > 0;
-        remaining -= chunkSize
-    ) {
-        chunks.push(
-            remaining >= chunkSize
-                ? zeroChunk
-                : zeroChunk.subarray(0, remaining)
-        );
+        sizeBytes =
+            amount * 1024 * 1024;
     }
 
-    const blob = new Blob(chunks, {
-        type: "application/octet-stream"
-    });
-
-    const id = nextDiskId++;
+    // 大容量ファイルをBlobとして作らず、直接保存する
+    if (typeof window.showSaveFilePicker !== "function") {
+        alert(
+            "このブラウザーでは大容量HDDの直接保存に対応していません。\n" +
+            "ChromeでGitHub Pages版を開いてください。"
+        );
+        return;
+    }
 
     const safeName =
         name.replace(/[\\/:*?"<>|]/g, "_");
 
-    createdDisks.set(id, {
+    const fileName = safeName + ".img";
 
-        id,
-        name,
-        size: sizeBytes,
-        blob,
-        fileName: safeName + ".img"
+    const chunkSize = 4 * 1024 * 1024;
+    const zeroChunk = new Uint8Array(chunkSize);
 
-    });
+    let writable = null;
+    let completed = false;
 
-    updateDiskSelectors();
-    renderDiskList();
+    diskCreationRunning = true;
+    diskCreationCancelled = false;
 
-    alert(
-        "仮想HDDを作成しました。\n" +
-        name + "\n" +
-        formatSize(sizeBytes)
-    );
+    setDiskCreationUI(true);
+
+    $("disk-progress-area").classList.remove("hidden");
+    $("disk-progress").value = 0;
+    $("disk-progress-status").textContent =
+        "保存先を選択してください...";
+
+    try {
+        const handle = await window.showSaveFilePicker({
+            suggestedName: fileName,
+            types: [{
+                description: "RAW HDD Image",
+                accept: {
+                    "application/octet-stream": [".img"]
+                }
+            }]
+        });
+
+        if (diskCreationCancelled) {
+            throw new Error("CANCELLED");
+        }
+
+        writable = await handle.createWritable();
+
+        let written = 0;
+        let lastUpdate = 0;
+
+        $("disk-progress-status").textContent =
+            "HDDイメージを作成しています...";
+
+        while (written < sizeBytes) {
+            if (diskCreationCancelled) {
+                throw new Error("CANCELLED");
+            }
+
+            const remaining = sizeBytes - written;
+            const currentSize =
+                Math.min(chunkSize, remaining);
+
+            if (currentSize === chunkSize) {
+                await writable.write(zeroChunk);
+            } else {
+                await writable.write(
+                    zeroChunk.subarray(0, currentSize)
+                );
+            }
+
+            written += currentSize;
+
+            if (
+                written - lastUpdate >= 32 * 1024 * 1024 ||
+                written === sizeBytes
+            ) {
+                const percent =
+                    written / sizeBytes * 100;
+
+                $("disk-progress").value = percent;
+
+                $("disk-progress-status").textContent =
+                    "作成中: " + percent.toFixed(1) + "% (" +
+                    formatSize(written) + " / " +
+                    formatSize(sizeBytes) + ")";
+
+                lastUpdate = written;
+
+                await new Promise(resolve =>
+                    requestAnimationFrame(resolve)
+                );
+            }
+        }
+
+        if (diskCreationCancelled) {
+            throw new Error("CANCELLED");
+        }
+
+        await writable.close();
+        writable = null;
+
+        completed = true;
+
+        const id = nextDiskId++;
+
+        createdDisks.set(id, {
+            id,
+            name,
+            size: sizeBytes,
+            fileName,
+            handle
+        });
+
+        updateDiskSelectors();
+        renderDiskList();
+
+        $("disk-progress").value = 100;
+        $("disk-progress-status").textContent =
+            "作成完了: " + formatSize(sizeBytes);
+
+        alert(
+            "仮想HDDを作成しました。\n\n" +
+            "名前: " + name + "\n" +
+            "容量: " + formatSize(sizeBytes) + "\n" +
+            "形式: RAW (.img)"
+        );
+
+    } catch (error) {
+        if (writable) {
+            try {
+                await writable.abort();
+            } catch (abortError) {
+                console.error(abortError);
+            }
+        }
+
+        if (
+            error.message === "CANCELLED" ||
+            error.name === "AbortError"
+        ) {
+            $("disk-progress-status").textContent =
+                "作成をキャンセルしました。";
+        } else {
+            console.error(error);
+
+            $("disk-progress-status").textContent =
+                "エラー: " + error.message;
+
+            alert(
+                "HDD作成に失敗しました。\n\n" +
+                (error.message || "原因不明のエラー")
+            );
+        }
+    } finally {
+        diskCreationRunning = false;
+        diskCreationCancelled = false;
+
+        setDiskCreationUI(false);
+    }
 }
 
 // ====================================
@@ -922,11 +1161,17 @@ function createVirtualDisk() {
 // ====================================
 
 async function getDiskBuffer(fileInputId, selectorId) {
-
     const selectedFile = $(fileInputId).files[0];
 
     // ファイル選択を優先
     if (selectedFile) {
+        if (selectedFile.size > MAX_V86_BUFFER_SIZE) {
+            throw new Error(
+                selectedFile.name + " は512MBを超えています。\n" +
+                "現在のv86接続方式では、この大きさのHDDを" +
+                "メモリに読み込むことはできません。"
+            );
+        }
 
         setStatus("Reading " + selectedFile.name + "...");
 
@@ -945,9 +1190,18 @@ async function getDiskBuffer(fileInputId, selectorId) {
         return null;
     }
 
+    if (disk.size > MAX_V86_BUFFER_SIZE) {
+        throw new Error(
+            disk.name + " は512MBを超えています。\n" +
+            "大容量HDDのv86接続機能はまだ実装されていません。"
+        );
+    }
+
     setStatus("Reading " + disk.name + "...");
 
-    return await disk.blob.arrayBuffer();
+    const file = await disk.handle.getFile();
+
+    return await file.arrayBuffer();
 }
 
 // ====================================
@@ -955,7 +1209,6 @@ async function getDiskBuffer(fileInputId, selectorId) {
 // ====================================
 
 function resetScreen() {
-
     const screen = $("screen_container");
 
     screen.innerHTML = `
@@ -968,7 +1221,6 @@ function resetScreen() {
     `;
 }
 
-
 // ====================================
 // VIRTUAL KEYBOARD
 // ====================================
@@ -976,18 +1228,20 @@ function resetScreen() {
 const pressedKeys = new Map();
 
 function sendKeyDown(code) {
-
     if (!emulator || !poweredOn || paused || busy) {
         return false;
     }
 
-    if (typeof emulator.keyboard_send_scancodes !== "function") {
+    if (
+        typeof emulator.keyboard_send_scancodes !== "function"
+    ) {
         $("keyboard-message").textContent =
             "このv86ではキーボードAPIを利用できません。";
         return false;
     }
 
     const extended = code.startsWith("E0");
+
     const scan = parseInt(
         extended ? code.substring(2) : code,
         16
@@ -1011,12 +1265,12 @@ function sendKeyDown(code) {
 }
 
 function sendKeyUp(code) {
-
     if (!emulator || !poweredOn) {
         return;
     }
 
     const extended = code.startsWith("E0");
+
     const scan = parseInt(
         extended ? code.substring(2) : code,
         16
@@ -1040,7 +1294,6 @@ function sendKeyUp(code) {
 }
 
 function pressVirtualKey(button, event) {
-
     event.preventDefault();
 
     const code = button.dataset.code;
@@ -1064,7 +1317,6 @@ function pressVirtualKey(button, event) {
 }
 
 function releaseVirtualKey(code) {
-
     if (!pressedKeys.has(code)) {
         return;
     }
@@ -1079,7 +1331,6 @@ function releaseVirtualKey(code) {
 }
 
 function releaseAllVirtualKeys() {
-
     for (const code of Array.from(pressedKeys.keys())) {
         releaseVirtualKey(code);
     }
@@ -1088,7 +1339,6 @@ function releaseAllVirtualKeys() {
 document.querySelectorAll(
     "#virtual-keyboard .key"
 ).forEach(button => {
-
     button.addEventListener("pointerdown", event => {
         pressVirtualKey(button, event);
     });
@@ -1108,10 +1358,7 @@ document.querySelectorAll(
     button.addEventListener("contextmenu", event => {
         event.preventDefault();
     });
-
 });
-
-// ブラウザから離れた場合、全キーを解放
 
 window.addEventListener("blur", releaseAllVirtualKeys);
 
@@ -1126,7 +1373,6 @@ document.addEventListener("visibilitychange", () => {
 // ====================================
 
 function updateButtons() {
-
     $("start-button").disabled =
         poweredOn || busy;
 
@@ -1145,18 +1391,15 @@ function updateButtons() {
 // ====================================
 
 async function powerOn() {
-
     if (poweredOn || busy) {
         return;
     }
 
     if (typeof V86 === "undefined") {
-
         alert(
             "libv86.jsを読み込めません。\n" +
             "v86フォルダを確認してください。"
         );
-
         return;
     }
 
@@ -1172,9 +1415,6 @@ async function powerOn() {
     setStatus("Preparing virtual PC...");
 
     try {
-
-        // ファイルを読み込む
-
         const cdrom = await readSelectedFile("cdrom");
 
         const hda = await getDiskBuffer(
@@ -1190,10 +1430,7 @@ async function powerOn() {
         const fda = await readSelectedFile("fda");
         const fdb = await readSelectedFile("fdb");
 
-        // v86の設定
-
         const options = {
-
             wasm_path: "./v86/v86.wasm",
 
             memory_size:
@@ -1220,10 +1457,7 @@ async function powerOn() {
                 Number($("boot-order").value),
 
             autostart: true
-
         };
-
-        // CD-ROM
 
         if (cdrom) {
             options.cdrom = {
@@ -1231,15 +1465,11 @@ async function powerOn() {
             };
         }
 
-        // HDD 1
-
         if (hda) {
             options.hda = {
                 buffer: hda
             };
         }
-
-        // HDD 2
 
         if (hdb) {
             options.hdb = {
@@ -1247,15 +1477,11 @@ async function powerOn() {
             };
         }
 
-        // Floppy 1
-
         if (fda) {
             options.fda = {
                 buffer: fda
             };
         }
-
-        // Floppy 2
 
         if (fdb) {
             options.fdb = {
@@ -1270,7 +1496,6 @@ async function powerOn() {
         emulator.add_listener(
             "emulator-ready",
             function() {
-
                 poweredOn = true;
                 paused = false;
                 busy = false;
@@ -1280,57 +1505,45 @@ async function powerOn() {
                 updateButtons();
 
                 $("screen_container").focus();
-
             }
         );
 
         emulator.add_listener(
             "emulator-started",
             function() {
-
                 if (!paused) {
                     setStatus("RUNNING");
                 }
-
             }
         );
 
         emulator.add_listener(
             "emulator-stopped",
             function() {
-
                 if (poweredOn && !paused) {
                     setStatus("STOPPED");
                 }
-
             }
         );
 
         emulator.add_listener(
             "download-error",
             function(error) {
-
-                console.error(
-                    "v86 download error:",
-                    error
-                );
+                console.error("v86 download error:", error);
 
                 setStatus(
                     "LOAD ERROR: " +
                     (error.file_name || "Unknown file")
                 );
-
             }
         );
 
     } catch (error) {
-
         console.error(error);
 
         setStatus("ERROR: " + error.message);
 
         if (emulator) {
-
             try {
                 await emulator.destroy();
             } catch (cleanupError) {
@@ -1350,12 +1563,10 @@ async function powerOn() {
         updateButtons();
 
         alert(
-            "仮想PCの起動に失敗しました。\n" +
+            "仮想PCの起動に失敗しました。\n\n" +
             error.message
         );
-
     }
-
 }
 
 // ====================================
@@ -1363,7 +1574,6 @@ async function powerOn() {
 // ====================================
 
 async function togglePause() {
-
     if (!emulator || !poweredOn || busy) {
         return;
     }
@@ -1372,9 +1582,7 @@ async function togglePause() {
     updateButtons();
 
     try {
-
         if (!paused) {
-
             releaseAllVirtualKeys();
 
             await emulator.stop();
@@ -1384,9 +1592,7 @@ async function togglePause() {
             $("pause-button").textContent = "RESUME";
 
             setStatus("PAUSED");
-
         } else {
-
             await emulator.run();
 
             paused = false;
@@ -1394,22 +1600,15 @@ async function togglePause() {
             $("pause-button").textContent = "PAUSE";
 
             setStatus("RUNNING");
-
         }
-
     } catch (error) {
-
         console.error(error);
 
         setStatus("PAUSE ERROR: " + error.message);
-
     } finally {
-
         busy = false;
         updateButtons();
-
     }
-
 }
 
 // ====================================
@@ -1417,7 +1616,6 @@ async function togglePause() {
 // ====================================
 
 async function restartPC() {
-
     if (!emulator || !poweredOn || busy) {
         return;
     }
@@ -1428,7 +1626,6 @@ async function restartPC() {
     try {
         releaseAllVirtualKeys();
 
-
         paused = false;
 
         $("pause-button").textContent = "PAUSE";
@@ -1436,20 +1633,14 @@ async function restartPC() {
         setStatus("RESTARTING...");
 
         emulator.restart();
-
     } catch (error) {
-
         console.error(error);
 
         setStatus("RESTART ERROR: " + error.message);
-
     } finally {
-
         busy = false;
         updateButtons();
-
     }
-
 }
 
 // ====================================
@@ -1457,12 +1648,7 @@ async function restartPC() {
 // ====================================
 
 async function powerOff() {
-
-    if (busy) {
-        return;
-    }
-
-    if (!emulator) {
+    if (busy || !emulator) {
         return;
     }
 
@@ -1474,17 +1660,11 @@ async function powerOff() {
     setStatus("POWERING OFF...");
 
     try {
-
         await emulator.stop();
-
         await emulator.destroy();
-
     } catch (error) {
-
         console.error(error);
-
     } finally {
-
         emulator = null;
 
         poweredOn = false;
@@ -1503,9 +1683,7 @@ async function powerOff() {
         setStatus("OFF");
 
         updateButtons();
-
     }
-
 }
 
 // ====================================
@@ -1513,23 +1691,16 @@ async function powerOff() {
 // ====================================
 
 function fullscreen() {
-
     if (!emulator) {
         return;
     }
 
     try {
-
         emulator.screen_go_fullscreen();
-
     } catch (error) {
-
         console.error(error);
-
         setStatus("FULLSCREEN ERROR");
-
     }
-
 }
 
 // ====================================
@@ -1564,6 +1735,11 @@ $("fullscreen-button").addEventListener(
 $("create-disk-button").addEventListener(
     "click",
     createVirtualDisk
+);
+
+$("cancel-disk-button").addEventListener(
+    "click",
+    cancelDiskCreation
 );
 
 // ====================================
